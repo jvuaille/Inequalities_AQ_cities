@@ -1,4 +1,4 @@
-# Exploring Inequalities in Urban Air Pollution
+# Exploring inequalities related to air pollution in European urban areas
 
 - **`PCA_plain.py`**  
   Performs Principal Component Analysis (PCA) across selected variables to derive the main dimensions of inequality in air pollution exposure.
