@@ -6,7 +6,7 @@
 - **`clustering_EU.ipynb`**  
   Jupyter Notebook that clusters European urban areas based on air quality and demographic metrics. Includes data preparation, clustering (e.g. k-means), and visualization of cluster profiles.
 
-- **`indication_hotspots.py`**  
+- **`identification_hotspots.py`**  
   Identifies “air quality and demographic hotspots” as defined in Vuaille et. al (2026). _Exploring inequalities related to air pollution in European urban areas_.
 
 - Datasets:
