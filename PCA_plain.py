@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Apr  9 10:52:18 2020
-
-@author: cbn978
-"""
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
@@ -85,12 +80,6 @@ def stat_data_Ml(my_x, my_x_legend, my_y, my_y_legend, my_scenario, file_name, m
 # where the first dimension is given by the first PC etc.
 # the components give the matrix (n components, n features) where we have the coordinates of each feature 
 # as column in the new dimensions
-# these coordinates can be used to estimate the contribution of each feature to the PC: the higher, the more projected, the more contribution
-# the coordinates of the individuals allows to plot the whol dataset on the new dimensions
-# plotting individuals and features' eigen vectors give an idea of the projected dataset and the influence of the different
-# features. The explained variance is the explained variance by the most contributing features
-# ex: SOM on PC1 axis contributes a lot, PC1 holds x% of the totalvariance, clusters of treatments from left to right of datapoints 
-# means SOM and others explain x% of difference between the treatments
 
 def PC_analysis(my_features, my_nb_components, 
                 my_scenario, variables_names_list,
@@ -98,13 +87,13 @@ def PC_analysis(my_features, my_nb_components,
     pca = PCA(n_components=my_nb_components)
     pca.fit_transform(my_features)
 
-    ### loadings - method 2. - pca.components_ with size (n_components, n_features) so transpose is (n_features, n_components)
+    ### loadings ca.components_ with size (n_components, n_features) transposed (n_features, n_components)
     loadings = pca.components_.T * np.sqrt(pca.explained_variance_) # each feature vector with coordinates on each C is multiplied by eigen values. get the 'weight or load' of each feature on each C
     pd.DataFrame(data=loadings, columns=np.arange(0, len(loadings)), index=variables_names_list).to_csv(
                 my_outputs_folder_path+'\\'+'Contrib_method2_%s.csv' %(
                 my_scenario), index=True)    
     
-    ### loadings to plot - array 'loadings' to take the transpose of to get the weight of all features on the first, second etc C
+    ### loadings to plot 
     fig=plt.figure(figsize=(25,8))
     plt.bar(np.arange(1, len(pca.components_)*2,2), np.abs(loadings.T[0]), width=1.5, 
             align='center', label='PC %d'%(1))
@@ -148,11 +137,7 @@ def PC_analysis(my_features, my_nb_components,
     print('To capture 90% of the variance in the dataset we need at least '+
           '%d PCs, %d for at least'%(index_pc[where_90perc],index_pc[where_95perc])+
           ' 95% of the variance, ' +'%d'%(index_pc[where_80perc])+' for at least 80% of the variance and '+'%d'%index_pc[where_99perc] +
-          ' for at least 99% of the variance.'
-          # 'With '+'%d PCs, '%my_N_projection+
-          # 'we have %d'%(np.sum(pca.explained_variance_[0:my_N_projection])/my_nb_components*100)+
-          # '% of the total variance'
-          )
+          ' for at least 99% of the variance.')
 
     ### project features on x PCs
     my_projected_features=np.dot(pca.components_,my_features.T)[0:my_nb_components]
@@ -176,4 +161,4 @@ def PC_analysis(my_features, my_nb_components,
                  "Principal component statistics - Full dataset", 
                  my_scenario, 'Full dataset', my_outputs_folder_path)
     
-    return my_projected_features, pca.components_, index_pc[where_80perc]
+    return my_projected_features, pca.components_, index_pc[where_80perc] # return the number of components for 80% of the variance explained
